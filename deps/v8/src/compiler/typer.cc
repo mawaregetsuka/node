@@ -1274,7 +1274,7 @@ Type Typer::Visitor::TypeJSCreateStringIterator(Node* node) {
 }
 
 Type Typer::Visitor::TypeJSCreateKeyValueArray(Node* node) {
-  return Type::OtherObject();
+  return Type::Array();
 }
 
 Type Typer::Visitor::TypeJSCreateObject(Node* node) {
@@ -1321,9 +1321,7 @@ Type Typer::Visitor::TypeJSGetTemplateObject(Node* node) {
   return Type::Array();
 }
 
-Type Typer::Visitor::TypeJSLoadProperty(Node* node) {
-  return Type::NonInternal();
-}
+Type Typer::Visitor::TypeJSLoadProperty(Node* node) { return Type::Any(); }
 
 Type Typer::Visitor::TypeJSLoadNamed(Node* node) { return Type::NonInternal(); }
 
@@ -1419,6 +1417,8 @@ Type Typer::Visitor::Weaken(Node* node, Type current_type, Type previous_type) {
 }
 
 Type Typer::Visitor::TypeJSStoreProperty(Node* node) { UNREACHABLE(); }
+
+Type Typer::Visitor::TypeJSDefineProperty(Node* node) { UNREACHABLE(); }
 
 Type Typer::Visitor::TypeJSStoreNamed(Node* node) { UNREACHABLE(); }
 
