@@ -30,6 +30,7 @@
 """
 This is a utility for converting JavaScript source code into uint16_t[],
 that are used for embedding JavaScript code into the Node.js binary.
+This script will be called in build, target: node_javascript.cc
 """
 import argparse
 import os
@@ -166,13 +167,12 @@ def handle_config_gypi(config_filename):
 def jsonify(config):
   # 1. string comments
   config = re.sub(r'#.*?\n', '', config)
-  # 2. join multiline strings
-  config = re.sub(r"'$\s+'", '', config, flags=re.M)
-  # 3. normalize string literals from ' into "
+  # 2. normalize string literals from ' into "
   config = re.sub('\'', '"', config)
-  # 4. turn pseudo-booleans strings into Booleans
-  config = re.sub('"true"', 'true', config)
-  config = re.sub('"false"', 'false', config)
+  # 3. turn pseudo-booleans strings into Booleans
+  config = re.sub('"true"|"false"',
+                  lambda mo : 'true' if mo.group(0) == '"true"' else 'false',
+                  config)
   return config
 
 
